@@ -3,7 +3,7 @@
 //  PlayAudioFIle
 //
 //  Created by michal on 27/10/16.
-//  Copyright © 2016 borama. All rights reserved.
+//  Copyright © 2016 Michal Bojanowicz. All rights reserved.
 //
 
 import UIKit
