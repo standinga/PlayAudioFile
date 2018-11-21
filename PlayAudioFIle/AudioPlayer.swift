@@ -29,7 +29,7 @@ class AudioPlayer {
         
         let AVBufferSize = 1024
         let session = AVAudioSession.sharedInstance()
-        try session.setCategory(AVAudioSessionCategoryPlayback)
+        try session.setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playback)), mode: AVAudioSession.Mode.default)
         
         audioEngine = AVAudioEngine()
         audioPlayer = AVAudioPlayerNode()
@@ -73,3 +73,8 @@ class AudioPlayer {
     
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
+}

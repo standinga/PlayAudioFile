@@ -15,7 +15,7 @@ class AudioData {
         let audioFile = try AVAudioFile(forReading: audioUrl)
         let audioFileFormat = audioFile.processingFormat
         let audioFileSize = UInt32(audioFile.length)
-        let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFileFormat, frameCapacity: audioFileSize)
+        let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFileFormat, frameCapacity: audioFileSize)!
         try audioFile.read(into: audioBuffer)
         return audioBuffer
     }
@@ -26,7 +26,7 @@ class AudioData {
         let audioBuffer = try readFileIntoBuffer(audioUrl: audioUrl)
         let (L, R) = getDataFromBuffer(audioBuffer: audioBuffer)
         
-        print("AudioData audio max R: \(R.max())")
+        print("AudioData audio max R: \(String(describing: R.max()))")
         return (L, R)
     }
     
@@ -39,7 +39,7 @@ class AudioData {
             let offset = Int(Double(i) * stride)
             let endOffset = offset + Int(stride) < length ? offset + Int(stride) : length
             let currentChunk = Array(array[offset..<endOffset])
-            let currentChunkAbs = currentChunk.map { fabs($0) }
+            let currentChunkAbs = currentChunk.map { abs($0) }
             let currentChunkSum = currentChunkAbs.reduce(0.0, +)
             let currentAverage = currentChunkSum / Float(stride)
             averageValuesArray.append(currentAverage)
@@ -65,8 +65,8 @@ class AudioData {
             let endOffset = startOffset + frameSize < L.count ? startOffset + frameSize : L.count
             let currentLeftChunk = Array(L[startOffset..<endOffset])
             let currentRightChunk = Array(R[startOffset..<endOffset])
-            let currentLeftAbs = currentLeftChunk.map { fabs($0) }
-            let currentRightAbs = currentRightChunk.map { fabs($0) }
+            let currentLeftAbs = currentLeftChunk.map { abs($0) }
+            let currentRightAbs = currentRightChunk.map { abs($0) }
             let currentLeftSum = currentLeftAbs.reduce(0.0, +)
             let currentRightSum = currentRightAbs.reduce(0.0, +)
             let currentLeftAverage = currentLeftSum / Float(L.count)
@@ -142,7 +142,7 @@ class AudioData {
         
         let (Ldata, Rdata) = getDataFromBuffer(audioBuffer: audioBuffer)
         
-        let absoluteValues = zip(Ldata, Rdata).map { fabs($0) > fabs($1) ? fabs($0) : fabs($1) }
+        let absoluteValues = zip(Ldata, Rdata).map { abs($0) > abs($1) ? abs($0) : abs($1) }
         
             return absoluteValues.max()!
 
